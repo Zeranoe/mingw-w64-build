@@ -1,0 +1,265 @@
+#!/bin/bash
+#
+# Copyright (C) 2017 Kyle Schwarz
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+v_script="4.0.0"
+v_binutils="2.28"
+v_gcc="7.1.0"
+v_gmp="6.1.2"
+v_mpfr="3.1.5"
+v_mpc="1.0.3"
+v_isl="0.18"
+
+show_help()
+{
+  cat <<HELP
+usage: mingw-w64-build [OPTION]... ARCH...
+Build the MinGW-w64 toolchain for ARCH(s) (i686 or x86_64). 
+
+  -h, --help     display this help and exit
+  --version      output version information and exit
+
+Creates directories 'src' and 'bld' in the current directory and
+  removes them when complete.
+
+examples:
+  mingw-w64-build i686
+  mingw-w64-build x86_64
+  mingw-w64-build i686 x86_64
+HELP
+}
+
+show_version()
+{
+  cat <<VERSION
+mingw-w64-build $v_script
+Copyright (C) 2017 Kyle Schwarz
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+VERSION
+}
+
+error_exit()
+{
+  local error_text="$1"
+  shift
+
+  if [[ -z "$error_text" ]]; then
+    error_text="See 'build.log' for further details."
+  fi
+
+  echo "mingw-w64-build: error: $error_text" >&3
+
+  exit 1
+}
+
+clean_build()
+{
+  local build_dir="$1"
+
+  rm -fr "$build_dir"
+  mkdir -p "$build_dir"
+  cd "$build_dir" || error_exit  
+}
+
+download_sources()
+{
+  cd "$src" || error_exit
+
+  echo "downloading mingw-w64-git" >&3
+  git clone git://git.code.sf.net/p/mingw-w64/mingw-w64 "mingw-w64-git" || error_exit
+
+  local urls=(
+    "http://ftp.gnu.org/gnu/binutils/binutils-$v_binutils.tar.bz2"
+    "http://ftp.gnu.org/gnu/gcc/gcc-$v_gcc/gcc-$v_gcc.tar.bz2"
+    "http://ftp.gnu.org/gnu/gmp/gmp-$v_gmp.tar.xz"
+    "http://ftp.gnu.org/gnu/mpfr/mpfr-$v_mpfr.tar.xz"
+    "http://ftp.gnu.org/gnu/mpc/mpc-$v_mpc.tar.gz"
+    "http://isl.gforge.inria.fr/isl-$v_isl.tar.xz"
+  )
+
+  for url in "${urls[@]}"; do
+    local archive="${url##*/}"
+    local c
+    echo "downloading $archive" >&3
+    wget -nv "$url" || error_exit
+    echo "extracting $archive" >&3
+    case "${archive##*.}" in
+      gz) c=z ;;
+      bz2) c=j ;;
+      xz) c=J ;;
+    esac
+    tar -x${c}f "$archive" || error_exit
+  done
+
+  cd "$src/gcc-$v_gcc" || error_exit
+
+  ln -s "../gmp-$v_gmp" "gmp"
+  ln -s "../mpfr-$v_mpfr" "mpfr"
+  ln -s "../mpc-$v_mpc" "mpc"
+  ln -s "../isl-$v_isl" "isl"
+
+  patch -p 1 <<PATCH
+diff -uprN a/libstdc++-v3/config/os/mingw32-w64/os_defines.h b/libstdc++-v3/config/os/mingw32-w64/os_defines.h
+--- a/libstdc++-v3/config/os/mingw32-w64/os_defines.h   2017-01-01 04:07:43.000000000 -0800
++++ b/libstdc++-v3/config/os/mingw32-w64/os_defines.h   2017-05-25 18:47:52.161016148 -0700
+@@ -76,6 +76,7 @@
+
+ #ifdef __x86_64__
+ #define _GLIBCXX_LLP64 1
++#define _GLIBCXX_USE_WEAK_REF 0
+ #endif
+
+ // Enable use of GetModuleHandleEx (requires Windows XP/2003) in
+PATCH
+}
+
+build_toolchain()
+{
+  local host="$1-w64-mingw32"
+  local prefix="$wd/$host"
+  export PATH="$prefix/bin:$PATH"
+
+  rm -fr "$prefix"
+
+  clean_build "$bld/binutils"
+  echo "configuring binutils" >&3
+  "$src/binutils-$v_binutils/configure" --prefix="$prefix" --disable-shared \
+    --enable-static --with-sysroot="$prefix" --target="$host" \
+    --disable-multilib --disable-nls || error_exit
+  echo "building binutils" >&3
+  make -j $cpus || error_exit
+  echo "installing binutils" >&3
+  make install || error_exit
+
+  clean_build "$bld/mingw-w64"
+  echo "configuring mingw-w64-headers" >&3
+  "$src/mingw-w64-git/mingw-w64-headers/configure" --build="$build" \
+    --host="$host" --prefix="$prefix/$host" --enable-secure-api || error_exit
+  echo "installing mingw-w64-headers" >&3
+  make install || error_exit
+  cd "$prefix" || error_exit
+  ln -s "./$host" "./mingw" || error_exit
+
+  clean_build "$bld/gcc"
+  echo "configuring gcc" >&3
+  "$src/gcc-$v_gcc/configure" --target="$host" --disable-shared \
+    --enable-static --disable-multilib --prefix="$prefix" \
+    --enable-languages=c,c++ --disable-nls || error_exit
+  echo "running 'make-gcc' for gcc" >&3
+  make -j $cpus all-gcc || error_exit
+  echo "running 'install-gcc' for gcc" >&3
+  make install-gcc || error_exit
+
+  clean_build "$bld/mingw-w64"
+  echo "configuring mingw-w64-crt" >&3
+  "$src/mingw-w64-git/mingw-w64-crt/configure" --build="$build" --host="$host" \
+    --prefix="$prefix/$host" --with-sysroot="$prefix/$host"
+  echo "building mingw-w64-crt" >&3
+  make -j $cpus || error_exit
+  echo "installing mingw-w64-crt" >&3
+  make install || error_exit
+
+  cd "$bld/gcc" || error_exit
+  echo "building gcc" >&3
+  make -j $cpus || error_exit
+  echo "installing gcc" >&3
+  make install || error_exit
+
+  return 0
+}
+
+while :; do
+  case $1 in
+    -h|--help)
+      show_help
+      exit
+      ;;
+    --version)
+      show_version
+      exit
+      ;;
+    -?*)
+      echo "mingw-w64-build: error: unknown option: '$1'" >&2
+      exit
+      ;;
+    *)
+      break
+  esac
+
+  shift
+done
+
+if [[ "$PWD" = *" "* ]]; then
+  echo "mingw-w64-build: error: working path contains spaces" >&2
+  exit 1
+fi
+
+if [[ -z "$@" ]]; then
+  echo "mingw-w64-build: error: missing ARCH option" >&2
+  echo "See 'mingw-w64-build --help' for build options." >&2
+  exit 1
+fi
+
+for arch in $@; do
+  if [[ "$arch" != "i686" ]] && [[ "$arch" != "x86_64" ]]; then
+    echo "mingw-w64-build: error: invalid ARCH: '$arch'" >&2
+    exit 1
+  fi
+done
+
+progs=(
+  "wget"
+  "gzip"
+  "bzip2"
+  "xz"
+  "git"
+  "make"
+  "patch"
+  "g++"
+  "tr"
+  "tar"
+)
+missing_progs=""
+for prog in "${progs[@]}"; do
+  if ! command -v $prog >/dev/null; then
+    missing_progs="$prog $missing_progs"
+  fi
+done
+if [[ -n "$missing_progs" ]]; then
+  echo "mingw-w64-build: missing required program(s): $missing_progs" >&2
+  exit 1
+fi
+
+cpus=$(grep -c processor /proc/cpuinfo 2>/dev/null || sysctl -n hw.ncpu | tr -d "\n" 2>/dev/null)
+build=$(wget -qO - "http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD" | sh)
+wd="$PWD"
+src="$wd/src"
+bld="$wd/bld"
+log="$wd/bld/build.log"
+
+rm -fr "$log" "$src" "$bld"
+mkdir "$wd/bld" "$wd/src"
+download_sources 3>&1 1>>"$log" 2>&1
+
+for arch in $@; do
+  build_toolchain "$arch" 3>&1 1>>"$log" 2>&1
+done
+rm -fr "$wd/bld" "$wd/src"
+
+exit 0
