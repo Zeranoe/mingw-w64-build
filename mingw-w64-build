@@ -139,7 +139,7 @@ build_toolchain()
 
   clean_build "$bld/binutils"
   echo "configuring binutils" >&3
-  "$src/binutils-$v_binutils/configure" --prefix="$prefix" --disable-shared \
+  "../../src/binutils-$v_binutils/configure" --prefix="$prefix" --disable-shared \
     --enable-static --with-sysroot="$prefix" --target="$host" \
     --disable-multilib --disable-nls || error_exit
   echo "building binutils" >&3
@@ -149,7 +149,7 @@ build_toolchain()
 
   clean_build "$bld/mingw-w64"
   echo "configuring mingw-w64-headers" >&3
-  "$src/mingw-w64-git/mingw-w64-headers/configure" --build="$build" \
+  "../../src/mingw-w64-git/mingw-w64-headers/configure" --build="$build" \
     --host="$host" --prefix="$prefix/$host" --enable-secure-api || error_exit
   echo "installing mingw-w64-headers" >&3
   make install || error_exit
@@ -158,7 +158,7 @@ build_toolchain()
 
   clean_build "$bld/gcc"
   echo "configuring gcc" >&3
-  "$src/gcc-$v_gcc/configure" --target="$host" --disable-shared \
+  "../../src/gcc-$v_gcc/configure" --target="$host" --disable-shared \
     --enable-static --disable-multilib --prefix="$prefix" \
     --enable-languages=c,c++ --disable-nls || error_exit
   echo "running 'make-gcc' for gcc" >&3
@@ -168,7 +168,7 @@ build_toolchain()
 
   clean_build "$bld/mingw-w64"
   echo "configuring mingw-w64-crt" >&3
-  "$src/mingw-w64-git/mingw-w64-crt/configure" --build="$build" --host="$host" \
+  "../../src/mingw-w64-git/mingw-w64-crt/configure" --build="$build" --host="$host" \
     --prefix="$prefix/$host" --with-sysroot="$prefix/$host"
   echo "building mingw-w64-crt" >&3
   make -j $cpus || error_exit
