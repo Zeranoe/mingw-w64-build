@@ -82,7 +82,7 @@ download_sources()
   cd "$src" || error_exit
 
   echo "downloading mingw-w64-git" >&3
-  git clone git://git.code.sf.net/p/mingw-w64/mingw-w64 "mingw-w64-git" || error_exit
+  git clone --depth 1 git://git.code.sf.net/p/mingw-w64/mingw-w64 "mingw-w64-git" || error_exit
 
   local urls=(
     "http://ftp.gnu.org/gnu/binutils/binutils-$v_binutils.tar.bz2"
