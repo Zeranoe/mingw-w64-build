@@ -2,10 +2,10 @@
 MinGW-w64 cross compiler build script for i686 (Win32) and x86_64 (Win64).
 
 ## Package
-* Binutils 2.28
-* GCC 7.1.0
+* Binutils 2.29.1
+* GCC 7.2.0
 * GMP 6.1.2
-* MPFR 3.1.5
+* MPFR 3.1.6
 * MPC 1.0.3
 * isl 0.18
 
@@ -13,8 +13,8 @@ MinGW-w64 cross compiler build script for i686 (Win32) and x86_64 (Win64).
 mingw-w64-build has been tested on the following platforms:
 * Ubuntu 17.04 & 16.04
 * Cygwin
-* macOS 10.12 (requires Homebrew)
-* Debian 8.8
+* macOS 10.13 (requires Homebrew)
+* Debian 9
 
 ## License
 mingw-w64-build is licensed under the GNU GPL 3.0 or later. A copy of the license can be found in the LICENSE file.

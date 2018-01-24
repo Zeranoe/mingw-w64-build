@@ -16,11 +16,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-v_script="4.0.0"
-v_binutils="2.28"
-v_gcc="7.1.0"
+v_script="4.0.1"
+v_binutils="2.29.1"
+v_gcc="7.2.0"
 v_gmp="6.1.2"
-v_mpfr="3.1.5"
+v_mpfr="3.1.6"
 v_mpc="1.0.3"
 v_isl="0.18"
 
@@ -86,7 +86,7 @@ download_sources()
 
   local urls=(
     "http://ftp.gnu.org/gnu/binutils/binutils-$v_binutils.tar.bz2"
-    "http://ftp.gnu.org/gnu/gcc/gcc-$v_gcc/gcc-$v_gcc.tar.bz2"
+    "http://ftp.gnu.org/gnu/gcc/gcc-$v_gcc/gcc-$v_gcc.tar.xz"
     "http://ftp.gnu.org/gnu/gmp/gmp-$v_gmp.tar.xz"
     "http://ftp.gnu.org/gnu/mpfr/mpfr-$v_mpfr.tar.xz"
     "http://ftp.gnu.org/gnu/mpc/mpc-$v_mpc.tar.gz"
