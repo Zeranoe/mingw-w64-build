@@ -1,13 +1,13 @@
 # mingw-w64-build
-MinGW-w64 cross compiler build script for i686 (Win32) and x86_64 (Win64).
+[MinGW-w64](https://mingw-w64.org) cross compiler build script for i686 (Win32) and x86_64 (Win64).
 
 ## Package
-* Binutils 2.29.1
-* GCC 7.2.0
-* GMP 6.1.2
-* MPFR 3.1.6
-* MPC 1.0.3
-* isl 0.18
+* [Binutils](https://www.gnu.org/software/binutils/) 2.29.1
+* [GCC](https://gcc.gnu.org/) 7.2.0
+* [GMP](https://gmplib.org/) 6.1.2
+* [MPFR](http://www.mpfr.org/) 3.1.6
+* [MPC](http://www.multiprecision.org/mpc/) 1.0.3
+* [isl](http://isl.gforge.inria.fr/) 0.18
 
 ## Platforms
 mingw-w64-build has been tested on the following platforms:
