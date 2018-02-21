@@ -254,12 +254,12 @@ bld="$wd/bld"
 log="$wd/bld/build.log"
 
 rm -fr "$log" "$src" "$bld"
-mkdir "$wd/bld" "$wd/src"
+mkdir "$bld" "$src"
 download_sources 3>&1 1>>"$log" 2>&1
 
 for arch in $@; do
   build_toolchain "$arch" 3>&1 1>>"$log" 2>&1
 done
-rm -fr "$wd/bld" "$wd/src"
+rm -fr "$bld" "$src"
 
 exit 0
