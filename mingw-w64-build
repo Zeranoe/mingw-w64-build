@@ -28,7 +28,7 @@ show_help()
 {
   cat <<HELP
 usage: mingw-w64-build [OPTION]... ARCH...
-Build the MinGW-w64 toolchain for ARCH(s) (i686 or x86_64). 
+Build the MinGW-w64 toolchain for ARCH(s) (i686 or x86_64).
 
   -h, --help     display this help and exit
   --version      output version information and exit
@@ -74,7 +74,7 @@ clean_build()
 
   rm -fr "$build_dir"
   mkdir -p "$build_dir"
-  cd "$build_dir" || error_exit  
+  cd "$build_dir" || error_exit
 }
 
 download_sources()
