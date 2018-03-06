@@ -17,7 +17,7 @@
 #
 
 v_script="4.0.1"
-v_binutils="2.30"
+v_binutils="2.29.1"
 v_gcc="7.3.0"
 v_gmp="6.1.2"
 v_mpfr="4.0.1"
