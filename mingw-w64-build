@@ -22,7 +22,7 @@ v_gcc="7.3.0"
 v_gmp="6.1.2"
 v_mpfr="4.0.1"
 v_mpc="1.1.0"
-v_isl="0.18"
+v_isl="0.19"
 
 show_help()
 {

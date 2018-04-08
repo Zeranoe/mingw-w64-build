@@ -7,7 +7,7 @@
 * [GMP](https://gmplib.org/) 6.1.2
 * [MPFR](http://www.mpfr.org/) 4.0.1
 * [MPC](http://www.multiprecision.org/mpc/) 1.1.0
-* [isl](http://isl.gforge.inria.fr/) 0.18
+* [isl](http://isl.gforge.inria.fr/) 0.19
 
 ## Platforms
 mingw-w64-build has been tested on the following platforms:
