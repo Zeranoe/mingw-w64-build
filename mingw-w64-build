@@ -97,7 +97,7 @@ download_sources()
     local archive="${url##*/}"
     local c
     echo "downloading $archive" >&3
-    wget -nv "$url" || error_exit
+    curl -O "$url" || error_exit
     echo "extracting $archive" >&3
     case "${archive##*.}" in
       gz) c=z ;;
@@ -224,7 +224,7 @@ for arch in $@; do
 done
 
 progs=(
-  "wget"
+  "curl"
   "gzip"
   "bzip2"
   "xz"
@@ -247,7 +247,7 @@ if [[ -n "$missing_progs" ]]; then
 fi
 
 cpus=$(grep -c processor /proc/cpuinfo 2>/dev/null || sysctl -n hw.ncpu | tr -d "\n" 2>/dev/null)
-build=$(wget -qO - "http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD" | sh)
+build=$(curl -s "http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD" | sh)
 wd="$PWD"
 src="$wd/src"
 bld="$wd/bld"
