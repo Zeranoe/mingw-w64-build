@@ -95,16 +95,10 @@ download_sources()
 
   for url in "${urls[@]}"; do
     local archive="${url##*/}"
-    local c
     echo "downloading $archive" >&3
     curl -O "$url" || error_exit
     echo "extracting $archive" >&3
-    case "${archive##*.}" in
-      gz) c=z ;;
-      bz2) c=j ;;
-      xz) c=J ;;
-    esac
-    tar -x${c}f "$archive" || error_exit
+    tar -xf "$archive" || error_exit
   done
 
   cd "$src/gcc-$v_gcc" || error_exit
@@ -227,7 +221,6 @@ progs=(
   "curl"
   "gzip"
   "bzip2"
-  "xz"
   "git"
   "make"
   "patch"
