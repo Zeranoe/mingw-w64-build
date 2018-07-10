@@ -17,8 +17,8 @@
 #
 
 v_script="4.0.1"
-v_binutils="2.29.1"
-v_gcc="7.3.0"
+v_binutils="2.30git"
+v_gcc="7svn"
 v_gmp="6.1.2"
 v_mpfr="4.0.1"
 v_mpc="1.1.0"
@@ -84,9 +84,13 @@ download_sources()
   echo "downloading mingw-w64-git" >&3
   git clone --depth 1 git://git.code.sf.net/p/mingw-w64/mingw-w64 "mingw-w64-git" || error_exit
 
+  echo "downloading binutils" >&3
+  git clone --depth 1 -b binutils-2_30-branch --single-branch git://sourceware.org/git/binutils-gdb.git binutils-$v_binutils || error_exit
+
+  echo "downloading gcc" >&3
+  svn co svn://gcc.gnu.org/svn/gcc/branches/gcc-7-branch gcc-$v_gcc || error_exit
+
   local urls=(
-    "http://ftp.gnu.org/gnu/binutils/binutils-$v_binutils.tar.bz2"
-    "http://ftp.gnu.org/gnu/gcc/gcc-$v_gcc/gcc-$v_gcc.tar.xz"
     "http://ftp.gnu.org/gnu/gmp/gmp-$v_gmp.tar.xz"
     "http://ftp.gnu.org/gnu/mpfr/mpfr-$v_mpfr.tar.xz"
     "http://ftp.gnu.org/gnu/mpc/mpc-$v_mpc.tar.gz"
@@ -135,7 +139,7 @@ build_toolchain()
   echo "configuring binutils" >&3
   "../../src/binutils-$v_binutils/configure" --prefix="$prefix" --disable-shared \
     --enable-static --with-sysroot="$prefix" --target="$host" \
-    --disable-multilib --disable-nls || error_exit
+    --disable-multilib --disable-nls --enable-lto --disable-werror || error_exit
   echo "building binutils" >&3
   make -j $cpus || error_exit
   echo "installing binutils" >&3
@@ -227,6 +231,10 @@ progs=(
   "g++"
   "tr"
   "tar"
+  "svn"
+  "flex"
+  "bison"
+  "makeinfo"
 )
 missing_progs=""
 for prog in "${progs[@]}"; do
