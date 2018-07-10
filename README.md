@@ -10,11 +10,7 @@
 * [isl](http://isl.gforge.inria.fr/) 0.19
 
 ## Platforms
-mingw-w64-build has been tested on the following platforms:
-* Ubuntu 17.04 & 16.04
-* Cygwin
-* macOS 10.13 (requires Homebrew)
-* Debian 9
+mingw-w64-build should run on Ubuntu, Cygwin, macOS (with Homebrew), and other Bash based shells.
 
 ## License
 mingw-w64-build is licensed under the GNU GPL 3.0 or later. A copy of the license can be found in the LICENSE file.
