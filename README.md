@@ -3,7 +3,7 @@
 
 ## Package
 * [Binutils](https://www.gnu.org/software/binutils/) 2.31git
-* [GCC](https://gcc.gnu.org/) 8svn
+* [GCC](https://gcc.gnu.org/) 7svn
 * [GMP](https://gmplib.org/) 6.1.2
 * [MPFR](http://www.mpfr.org/) 4.0.1
 * [MPC](http://www.multiprecision.org/mpc/) 1.1.0

@@ -18,7 +18,7 @@
 
 v_script="4.0.1"
 v_binutils="2.31git"
-v_gcc="8svn"
+v_gcc="7svn"
 v_gmp="6.1.2"
 v_mpfr="4.0.1"
 v_mpc="1.1.0"
@@ -88,7 +88,7 @@ download_sources()
   git clone --depth 1 -b binutils-2_31-branch --single-branch git://sourceware.org/git/binutils-gdb.git binutils-$v_binutils || error_exit
 
   echo "downloading gcc" >&3
-  svn co svn://gcc.gnu.org/svn/gcc/branches/gcc-8-branch gcc-$v_gcc || error_exit
+  svn co svn://gcc.gnu.org/svn/gcc/branches/gcc-7-branch gcc-$v_gcc || error_exit
 
   local urls=(
     "http://ftp.gnu.org/gnu/gmp/gmp-$v_gmp.tar.xz"
