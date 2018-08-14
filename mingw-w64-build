@@ -23,7 +23,7 @@ v_gcc="8svn"
 v_gmp="6.1.2"
 v_mpfr="4.0.1"
 v_mpc="1.1.0"
-v_isl="0.19"
+v_isl="0.20"
 
 show_help()
 {
