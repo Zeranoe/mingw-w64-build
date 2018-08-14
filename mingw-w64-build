@@ -17,6 +17,7 @@
 #
 
 v_script="4.0.1"
+v_mingww64="5git"
 v_binutils="2.31git"
 v_gcc="8svn"
 v_gmp="6.1.2"
@@ -81,8 +82,8 @@ download_sources()
 {
   cd "$src" || error_exit
 
-  echo "downloading mingw-w64-git" >&3
-  git clone --depth 1 git://git.code.sf.net/p/mingw-w64/mingw-w64 "mingw-w64-git" || error_exit
+  echo "downloading mingw-w64" >&3
+  git clone --depth 1 -b v5.x git://git.code.sf.net/p/mingw-w64/mingw-w64 mingw-w64-$v_mingww64 || error_exit
 
   echo "downloading binutils" >&3
   git clone --depth 1 -b binutils-2_31-branch --single-branch git://sourceware.org/git/binutils-gdb.git binutils-$v_binutils || error_exit
@@ -147,7 +148,7 @@ build_toolchain()
 
   clean_build "$bld/mingw-w64"
   echo "configuring mingw-w64-headers" >&3
-  "../../src/mingw-w64-git/mingw-w64-headers/configure" --build="$build" \
+  "../../src/mingw-w64-$v_mingww64/mingw-w64-headers/configure" --build="$build" \
     --host="$host" --prefix="$prefix/$host" --enable-secure-api || error_exit
   echo "installing mingw-w64-headers" >&3
   make install || error_exit
@@ -166,7 +167,7 @@ build_toolchain()
 
   clean_build "$bld/mingw-w64"
   echo "configuring mingw-w64-crt" >&3
-  "../../src/mingw-w64-git/mingw-w64-crt/configure" --build="$build" --host="$host" \
+  "../../src/mingw-w64-$v_mingww64/mingw-w64-crt/configure" --build="$build" --host="$host" \
     --prefix="$prefix/$host" --with-sysroot="$prefix/$host"
   echo "building mingw-w64-crt" >&3
   make -j $cpus || error_exit
