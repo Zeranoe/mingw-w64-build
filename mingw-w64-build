@@ -112,20 +112,6 @@ download_sources()
   ln -s "../mpfr-$v_mpfr" "mpfr"
   ln -s "../mpc-$v_mpc" "mpc"
   ln -s "../isl-$v_isl" "isl"
-
-  patch -p 1 <<PATCH
-diff -uprN a/libstdc++-v3/config/os/mingw32-w64/os_defines.h b/libstdc++-v3/config/os/mingw32-w64/os_defines.h
---- a/libstdc++-v3/config/os/mingw32-w64/os_defines.h   2017-01-01 04:07:43.000000000 -0800
-+++ b/libstdc++-v3/config/os/mingw32-w64/os_defines.h   2017-05-25 18:47:52.161016148 -0700
-@@ -76,6 +76,7 @@
-
- #ifdef __x86_64__
- #define _GLIBCXX_LLP64 1
-+#define _GLIBCXX_USE_WEAK_REF 0
- #endif
-
- // Enable use of GetModuleHandleEx (requires Windows XP/2003) in
-PATCH
 }
 
 build_toolchain()
