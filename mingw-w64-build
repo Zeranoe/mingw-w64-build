@@ -18,7 +18,7 @@
 
 v_script="4.0.1"
 v_mingww64="6git"
-v_binutils="2.31git"
+v_binutils="2.32git"
 v_gcc="8svn"
 v_gmp="6.1.2"
 v_mpfr="4.0.1"
@@ -86,7 +86,7 @@ download_sources()
   git clone --depth 1 -b v6.x git://git.code.sf.net/p/mingw-w64/mingw-w64 mingw-w64-$v_mingww64 || error_exit
 
   echo "downloading binutils" >&3
-  git clone --depth 1 -b binutils-2_31-branch --single-branch git://sourceware.org/git/binutils-gdb.git binutils-$v_binutils || error_exit
+  git clone --depth 1 -b binutils-2_32-branch --single-branch git://sourceware.org/git/binutils-gdb.git binutils-$v_binutils || error_exit
 
   echo "downloading gcc" >&3
   svn co svn://gcc.gnu.org/svn/gcc/branches/gcc-8-branch gcc-$v_gcc || error_exit
