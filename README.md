@@ -3,10 +3,10 @@
 
 ## Package
 * [MinGW-w64](https://mingw-w64.org) 6git
-* [Binutils](https://www.gnu.org/software/binutils/) 2.31git
+* [Binutils](https://www.gnu.org/software/binutils/) 2.32git
 * [GCC](https://gcc.gnu.org/) 8svn
 * [GMP](https://gmplib.org/) 6.1.2
-* [MPFR](http://www.mpfr.org/) 4.0.1
+* [MPFR](http://www.mpfr.org/) 4.0.2
 * [MPC](http://www.multiprecision.org/mpc/) 1.1.0
 * [isl](http://isl.gforge.inria.fr/) 0.20
 
