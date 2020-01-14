@@ -16,9 +16,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-v_script="4.0.1"
-v_mingww64="6git"
-v_binutils="2.32git"
+v_script="4git"
+v_mingww64="7git"
+v_binutils="2.33git"
 v_gcc="9svn"
 v_gmp="6.1.2"
 v_mpfr="4.0.2"
@@ -48,7 +48,7 @@ show_version()
 {
   cat <<VERSION
 mingw-w64-build $v_script
-Copyright (C) 2019 Kyle Schwarz
+Copyright (C) 2020 Kyle Schwarz
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
@@ -83,10 +83,10 @@ download_sources()
   cd "$src" || error_exit
 
   echo "downloading mingw-w64" >&3
-  git clone --depth 1 -b v6.x git://git.code.sf.net/p/mingw-w64/mingw-w64 mingw-w64-$v_mingww64 || error_exit
+  git clone --depth 1 -b v7.x git://git.code.sf.net/p/mingw-w64/mingw-w64 mingw-w64-$v_mingww64 || error_exit
 
   echo "downloading binutils" >&3
-  git clone --depth 1 -b binutils-2_32-branch --single-branch git://sourceware.org/git/binutils-gdb.git binutils-$v_binutils || error_exit
+  git clone --depth 1 -b binutils-2_33-branch --single-branch git://sourceware.org/git/binutils-gdb.git binutils-$v_binutils || error_exit
 
   echo "downloading gcc" >&3
   svn co svn://gcc.gnu.org/svn/gcc/branches/gcc-9-branch gcc-$v_gcc || error_exit
@@ -235,6 +235,7 @@ if [[ -n "$missing_progs" ]]; then
 fi
 
 cpus=$(grep -c processor /proc/cpuinfo 2>/dev/null || sysctl -n hw.ncpu | tr -d "\n" 2>/dev/null)
+(( cpus += 2 ))
 build=$(curl -s "http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD" | sh)
 wd="$PWD"
 src="$wd/src"

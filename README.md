@@ -2,8 +2,8 @@
 [MinGW-w64](https://mingw-w64.org) cross compiler build script for i686 (Win32) and x86_64 (Win64).
 
 ## Package
-* [MinGW-w64](https://mingw-w64.org) 6git
-* [Binutils](https://www.gnu.org/software/binutils/) 2.32git
+* [MinGW-w64](https://mingw-w64.org) 7git
+* [Binutils](https://www.gnu.org/software/binutils/) 2.33git
 * [GCC](https://gcc.gnu.org/) 9svn
 * [GMP](https://gmplib.org/) 6.1.2
 * [MPFR](http://www.mpfr.org/) 4.0.2
