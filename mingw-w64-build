@@ -86,10 +86,10 @@ download_sources()
   git clone --depth 1 -b v7.x git://git.code.sf.net/p/mingw-w64/mingw-w64 mingw-w64-$v_mingww64 || error_exit
 
   echo "downloading binutils" >&3
-  git clone --depth 1 -b binutils-2_33-branch --single-branch git://sourceware.org/git/binutils-gdb.git binutils-$v_binutils || error_exit
+  git clone --depth 1 -b binutils-2_33-branch git://sourceware.org/git/binutils-gdb.git binutils-$v_binutils || error_exit
 
   echo "downloading gcc" >&3
-  git clone --depth 1 -b gcc-9-branch git://gcc.gnu.org/git/gcc.git gcc-$v_gcc || error_exit
+  git clone --depth 1 -b releases/gcc-9 git://gcc.gnu.org/git/gcc.git gcc-$v_gcc || error_exit
 
   local urls=(
     "https://ftp.gnu.org/gnu/gmp/gmp-$v_gmp.tar.xz"
