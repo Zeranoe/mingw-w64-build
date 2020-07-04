@@ -31,8 +31,9 @@ show_help()
 usage: mingw-w64-build [OPTION]... ARCH...
 Build the MinGW-w64 toolchain for ARCH(s) (i686 or x86_64).
 
-  -h, --help     display this help and exit
-  --version      output version information and exit
+  -h, --help         display this help and exit
+  --version          output version information and exit
+  --enable-pthreads  enable pthreads via winpthreads
 
 Creates directories 'src' and 'bld' in the current directory and
   removes them when complete.
@@ -141,11 +142,15 @@ build_toolchain()
   cd "$prefix" || error_exit
   ln -s "./$host" "./mingw" || error_exit
 
+  if [[ "$pthreads" = true ]]; then
+    enable_threads="--enable-threads=posix"
+  fi
+
   clean_build "$bld/gcc"
   echo "configuring gcc" >&3
   "../../src/gcc-$v_gcc/configure" --target="$host" --disable-shared \
     --enable-static --disable-multilib --prefix="$prefix" \
-    --enable-languages=c,c++ --disable-nls || error_exit
+    --enable-languages=c,c++ --disable-nls $enable_threads || error_exit
   echo "running 'make-gcc' for gcc" >&3
   make -j $cpus all-gcc || error_exit
   echo "running 'install-gcc' for gcc" >&3
@@ -154,11 +159,22 @@ build_toolchain()
   clean_build "$bld/mingw-w64"
   echo "configuring mingw-w64-crt" >&3
   "../../src/mingw-w64-$v_mingww64/mingw-w64-crt/configure" --build="$build" --host="$host" \
-    --prefix="$prefix/$host" --with-sysroot="$prefix/$host"
+    --prefix="$prefix/$host" --with-sysroot="$prefix/$host" || error_exit
   echo "building mingw-w64-crt" >&3
   make -j $cpus || error_exit
   echo "installing mingw-w64-crt" >&3
   make install || error_exit
+
+  if [[ "$pthreads" = true ]]; then
+    clean_build "$bld/winpthreads"
+    echo "configuring winpthreads" >&3
+    "../../src/mingw-w64-$v_mingww64/mingw-w64-libraries/winpthreads/configure" --build="$build" \
+      --host="$host" --disable-shared --enable-static --prefix="$prefix/$host" || error_exit
+    echo "building winpthreads" >&3
+    make -j $cpus || error_exit
+    echo "installing winpthreads" >&3
+    make install || error_exit
+  fi
 
   cd "$bld/gcc" || error_exit
   echo "building gcc" >&3
@@ -178,6 +194,9 @@ while :; do
     --version)
       show_version
       exit
+      ;;
+    --enable-pthreads)
+      pthreads=true
       ;;
     -?*)
       echo "mingw-w64-build: error: unknown option: '$1'" >&2
