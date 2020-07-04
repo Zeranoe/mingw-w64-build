@@ -214,7 +214,6 @@ progs=(
   "bzip2"
   "git"
   "make"
-  "patch"
   "g++"
   "tr"
   "tar"
