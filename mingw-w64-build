@@ -121,6 +121,11 @@ build_toolchain()
   local prefix="$wd/$host"
   export PATH="$prefix/bin:$PATH"
 
+  i686_dwarf2=""
+  if [[ "$1" = "i686" ]]; then
+    i686_dwarf2="--disable-sjlj-exceptions --with-dwarf2"
+  fi
+
   rm -fr "$prefix"
 
   clean_build "$bld/binutils"
@@ -149,7 +154,7 @@ build_toolchain()
   clean_build "$bld/gcc"
   echo "configuring gcc" >&3
   "../../src/gcc-$v_gcc/configure" --target="$host" --disable-shared \
-    --enable-static --disable-multilib --prefix="$prefix" \
+    --enable-static --disable-multilib --prefix="$prefix" $i686_dwarf2 \
     --enable-languages=c,c++ --disable-nls $enable_threads || error_exit
   echo "running 'make-gcc' for gcc" >&3
   make -j $cpus all-gcc || error_exit
