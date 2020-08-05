@@ -121,9 +121,12 @@ build_toolchain()
   local prefix="$wd/$host"
   export PATH="$prefix/bin:$PATH"
 
-  i686_dwarf2=""
   if [[ "$1" = "i686" ]]; then
     i686_dwarf2="--disable-sjlj-exceptions --with-dwarf2"
+  fi
+
+  if [[ "$pthreads" = true ]]; then
+    enable_threads="--enable-threads=posix"
   fi
 
   rm -fr "$prefix"
@@ -146,10 +149,6 @@ build_toolchain()
   make install || error_exit
   cd "$prefix" || error_exit
   ln -s "./$host" "./mingw" || error_exit
-
-  if [[ "$pthreads" = true ]]; then
-    enable_threads="--enable-threads=posix"
-  fi
 
   clean_build "$bld/gcc"
   echo "configuring gcc" >&3
