@@ -22,8 +22,8 @@ v_binutils="2.35git"
 v_gcc="10git"
 v_gmp="6.2.0"
 v_mpfr="4.1.0"
-v_mpc="1.1.0"
-v_isl="0.21"
+v_mpc="1.2.0"
+v_isl="0.22"
 
 show_help()
 {
