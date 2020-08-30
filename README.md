@@ -7,8 +7,8 @@
 * [GCC](https://gcc.gnu.org/) 10git
 * [GMP](https://gmplib.org/) 6.2.0
 * [MPFR](http://www.mpfr.org/) 4.1.0
-* [MPC](http://www.multiprecision.org/mpc/) 1.1.0
-* [isl](http://isl.gforge.inria.fr/) 0.21
+* [MPC](http://www.multiprecision.org/mpc/) 1.2.0
+* [isl](http://isl.gforge.inria.fr/) 0.22
 
 ## Platforms
 mingw-w64-build should run on Ubuntu, Cygwin, macOS (with Homebrew), and other Bash based shells.
