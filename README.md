@@ -4,7 +4,7 @@
 ## Package
 * [MinGW-w64](https://mingw-w64.org) 7git
 * [Binutils](https://www.gnu.org/software/binutils/) 2.35git
-* [GCC](https://gcc.gnu.org/) 10git
+* [GCC](https://gcc.gnu.org/) 10.2.0
 * [GMP](https://gmplib.org/) 6.2.0
 * [MPFR](http://www.mpfr.org/) 4.1.0
 * [MPC](http://www.multiprecision.org/mpc/) 1.1.0
