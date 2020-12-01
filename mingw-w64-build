@@ -17,13 +17,13 @@
 #
 
 v_script="4git"
-v_mingww64="7git"
+v_mingww64="8git"
 v_binutils="2.35git"
 v_gcc="10git"
-v_gmp="6.2.0"
+v_gmp="6.2.1"
 v_mpfr="4.1.0"
-v_mpc="1.1.0"
-v_isl="0.21"
+v_mpc="1.2.1"
+v_isl="0.23"
 
 show_help()
 {
@@ -84,7 +84,7 @@ download_sources()
   cd "$src" || error_exit
 
   echo "downloading mingw-w64" >&3
-  git clone --depth 1 -b v7.x https://git.code.sf.net/p/mingw-w64/mingw-w64 mingw-w64-$v_mingww64 || error_exit
+  git clone --depth 1 -b v8.x https://git.code.sf.net/p/mingw-w64/mingw-w64 mingw-w64-$v_mingww64 || error_exit
 
   echo "downloading binutils" >&3
   git clone --depth 1 -b binutils-2_35-branch git://sourceware.org/git/binutils-gdb.git binutils-$v_binutils || error_exit
