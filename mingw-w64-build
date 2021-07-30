@@ -235,6 +235,7 @@ progs=(
   "curl"
   "gzip"
   "bzip2"
+  "xz"
   "git"
   "make"
   "g++"
