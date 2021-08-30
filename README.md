@@ -1,20 +1,27 @@
 # mingw-w64-build
-[MinGW-w64](https://mingw-w64.org) cross compiler build script for i686 (Win32) and x86_64 (Win64).
+mingw-w64-build is a Bash script to build a [MinGW-w64](https://mingw-w64.org)
+cross compiler for i686 (Win32) and x86_64 (Win64). It will build a fully static
+toolchain that can compile Windows executables that don't depend on any GCC dll
+files.
 
-## Package
-* [MinGW-w64](https://mingw-w64.org) 8git
-* [Binutils](https://www.gnu.org/software/binutils/) 2.35git
-* [GCC](https://gcc.gnu.org/) 10git
-* [GMP](https://gmplib.org/) 6.2.1
-* [MPFR](http://www.mpfr.org/) 4.1.0
-* [MPC](http://www.multiprecision.org/mpc/) 1.2.1
-* [isl](http://isl.gforge.inria.fr/) 0.23
+## Default Branches
+* [MinGW-w64](https://mingw-w64.org) v9.x
+* [Binutils](https://www.gnu.org/software/binutils/) binutils-2_37-branch
+* [GCC](https://gcc.gnu.org/) releases/gcc-11
+
+## Default Prefix
+`$HOME/.zeranoe/mingw-w64/i686` and `$HOME/.zeranoe/mingw-w64/x86_64` are the
+default install locations, but this location can be modified with the `--prefix`
+option. To ensure the new compilers are available system-wide, add
+`$HOME/.zeranoe/mingw-w64/<arch>/bin` to the `$PATH`.
 
 ## Platforms
-mingw-w64-build should run on Ubuntu, Cygwin, macOS (with Homebrew), and other Bash based shells.
-
-## License
-mingw-w64-build is licensed under the GNU GPL 3.0 or later. A copy of the license can be found in the LICENSE file.
+mingw-w64-build should run on Ubuntu, Cygwin, macOS (with Homebrew), and other
+Bash based shells.
 
 ## Usage
-See `mingw-w64-build --help` for build options.
+See `mingw-w64-build --help` for all build options.
+
+## License
+mingw-w64-build is licensed under the GNU GPL 3.0 or later. A copy of the
+license can be found in the LICENSE file.
