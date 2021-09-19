@@ -161,6 +161,9 @@ build()
 
     if [ "$arch" = "i686" ]; then
         local i686_dwarf2="--disable-sjlj-exceptions --with-dwarf2"
+        local crt_lib="--enable-lib32 --disable-lib64"
+    else
+        local crt_lib="--enable-lib64 --disable-lib32"
     fi
 
     create_dir "$bld_path/binutils"
@@ -207,7 +210,7 @@ build()
     execute "($arch): configuring MinGW-w64 CRT" "" \
         "$SRC_PATH/mingw-w64/mingw-w64-crt/configure" --build="$BUILD" \
             --host="$host" --prefix="$prefix/$host" \
-            --with-sysroot="$prefix/$host"
+            --with-sysroot="$prefix/$host" $crt_lib
 
     execute "($arch): building MinGW-w64 CRT" "" \
         make -j $JOB_COUNT
