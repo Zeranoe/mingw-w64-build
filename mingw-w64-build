@@ -402,6 +402,10 @@ change_dir "$SRC_PATH/gcc"
 execute "" "failed to download GCC dependencies" \
     ./contrib/download_prerequisites
 
+export CFLAGS="-g0"
+export CXXFLAGS="-g0"
+export LDFLAGS="-s"
+
 COMPLETE_MSG="complete, to use MinGW-w64 everywhere add"
 
 if [ "$BUILD_I686" ]; then
