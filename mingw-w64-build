@@ -16,7 +16,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-ROOT_PATH="$HOME/.zeranoe/mingw-w64"
+ROOT_PATH="${ROOT_PATH:-$HOME/.zeranoe/mingw-w64}"
+ROOT_PATH="$(realpath ${ROOT_PATH})"
 SRC_PATH="$ROOT_PATH/src"
 BLD_PATH="$ROOT_PATH/bld"
 LOG_FILE="$ROOT_PATH/build.log"
