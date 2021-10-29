@@ -17,11 +17,6 @@
 #
 
 ROOT_PATH="$HOME/.zeranoe/mingw-w64"
-SRC_PATH="$ROOT_PATH/src"
-BLD_PATH="$ROOT_PATH/bld"
-LOG_FILE="$ROOT_PATH/build.log"
-I686_PREFIX="$ROOT_PATH/i686"
-X86_64_PREFIX="$ROOT_PATH/x86_64"
 
 MINGW_W64_BRANCH="v9.x"
 BINUTILS_BRANCH="binutils-2_37-branch"
@@ -45,6 +40,7 @@ Options:
   -h, --help                   show help
   -j <count>, --jobs <count>   override make job count (default: $JOB_COUNT)
   -p <path>, --prefix <path>   install location (default: $ROOT_PATH/<arch>)
+  -r <path>, --root <path>     location for sources, build artifacts and the resulting compiler (default: $ROOT_PATH)
   --keep-artifacts             don't remove source and build files after a successful build
   --disable-threads            disable pthreads and STL <thread>
   --cached-sources             use existing sources instead of downloading new ones
@@ -269,6 +265,20 @@ while :; do
         --prefix=)
             arg_error "'--prefix' requires a non-empty option argument"
             ;;
+        -r|--root)
+            if [ "$2" ]; then
+                ROOT_PATH=$(realpath "$2")
+                shift
+            else
+                arg_error "'--root' requires a non-empty option argument"
+            fi
+            ;;
+        --root=?*)
+            ROOT_PATH=$(realpath "${1#*=}")
+            ;;
+        --root=)
+            arg_error "'--root' requires a non-empty option argument"
+            ;;
         --keep-artifacts)
             KEEP_ARTIFACTS=1
             ;;
@@ -342,6 +352,12 @@ while :; do
 
     shift
 done
+
+SRC_PATH="$ROOT_PATH/src"
+BLD_PATH="$ROOT_PATH/bld"
+LOG_FILE="$ROOT_PATH/build.log"
+I686_PREFIX="$ROOT_PATH/i686"
+X86_64_PREFIX="$ROOT_PATH/x86_64"
 
 if [ ! "$BUILD_I686" ] && [ ! "$BUILD_X86_64" ]; then
     arg_error "no ARCH was specified"
