@@ -26,6 +26,8 @@ ENABLE_THREADS="--enable-threads=posix"
 
 JOB_COUNT=$(($(getconf _NPROCESSORS_ONLN) + 2))
 
+LINKED_RUNTIME="msvcrt"
+
 show_help()
 {
 cat <<EOF
@@ -47,6 +49,7 @@ Options:
   --binutils-branch <branch>   set Binutils branch (default: $BINUTILS_BRANCH)
   --gcc-branch <branch>        set GCC branch (default: $GCC_BRANCH)
   --mingw-w64-branch <branch>  set MinGW-w64 branch (default: $MINGW_W64_BRANCH)
+  --linked-runtime <runtime>   set MinGW Linked Runtime (default: $LINKED_RUNTIME)
 EOF
 }
 
@@ -181,7 +184,8 @@ build()
 
     execute "($arch): configuring MinGW-w64 headers" "" \
         "$SRC_PATH/mingw-w64/mingw-w64-headers/configure" --build="$BUILD" \
-            --host="$host" --prefix="$prefix/$host"
+            --host="$host" --prefix="$prefix/$host" \
+            --with-default-msvcrt=$LINKED_RUNTIME
 
     execute "($arch): installing MinGW-w64 headers" "" \
         make install
@@ -206,6 +210,7 @@ build()
     execute "($arch): configuring MinGW-w64 CRT" "" \
         "$SRC_PATH/mingw-w64/mingw-w64-crt/configure" --build="$BUILD" \
             --host="$host" --prefix="$prefix/$host" \
+            --with-default-msvcrt=$LINKED_RUNTIME \
             --with-sysroot="$prefix/$host" $crt_lib
 
     execute "($arch): building MinGW-w64 CRT" "" \
@@ -315,6 +320,20 @@ while :; do
             ;;
         --gcc-branch=)
             arg_error "'--gcc-branch' requires a non-empty option argument"
+            ;;
+        --linked-runtime)
+            if [ "$2" ]; then
+                LINKED_RUNTIME="$2"
+                shift
+            else
+                arg_error "'--linked-runtime' requires a non-empty option argument"
+            fi
+            ;;
+        --linked-runtime=?*)
+            LINKED_RUNTIME=${1#*=}
+            ;;
+        --linked-runtime=)
+            arg_error "'--linked-runtime' requires a non-empty option argument"
             ;;
         --mingw-w64-branch)
             if [ "$2" ]; then
