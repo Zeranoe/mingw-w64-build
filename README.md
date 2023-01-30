@@ -6,7 +6,7 @@ files.
 
 ## Default Branches
 * [MinGW-w64](https://mingw-w64.org) v9.x
-* [Binutils](https://www.gnu.org/software/binutils/) binutils-2_39-branch
+* [Binutils](https://www.gnu.org/software/binutils/) binutils-2_40-branch
 * [GCC](https://gcc.gnu.org/) releases/gcc-12
 
 ## Default Prefix
