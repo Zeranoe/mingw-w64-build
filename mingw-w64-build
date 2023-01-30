@@ -372,12 +372,6 @@ while :; do
     shift
 done
 
-SRC_PATH="$ROOT_PATH/src"
-BLD_PATH="$ROOT_PATH/bld"
-LOG_FILE="$ROOT_PATH/build.log"
-I686_PREFIX="$ROOT_PATH/i686"
-X86_64_PREFIX="$ROOT_PATH/x86_64"
-
 if [ ! "$BUILD_I686" ] && [ ! "$BUILD_X86_64" ]; then
     arg_error "no ARCH was specified"
 fi
@@ -417,9 +411,16 @@ fi
 
 TOTAL_STEPS=$((TOTAL_STEPS + THREADS_STEPS + BUILD_STEPS))
 
+SRC_PATH="$ROOT_PATH/src"
+BLD_PATH="$ROOT_PATH/bld"
+LOG_FILE="$ROOT_PATH/build.log"
+
 if [ "$PREFIX" ]; then
     I686_PREFIX="$PREFIX"
     X86_64_PREFIX="$PREFIX"
+else
+    I686_PREFIX="$ROOT_PATH/i686"
+    X86_64_PREFIX="$ROOT_PATH/x86_64"
 fi
 
 CURRENT_STEP=1
