@@ -18,7 +18,7 @@
 
 ROOT_PATH="$HOME/.zeranoe/mingw-w64"
 
-MINGW_W64_BRANCH="v9.x"
+MINGW_W64_BRANCH="master"
 BINUTILS_BRANCH="binutils-2_40-branch"
 GCC_BRANCH="releases/gcc-12"
 

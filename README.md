@@ -5,7 +5,7 @@ toolchain that can compile Windows executables that don't depend on any GCC dll
 files.
 
 ## Default Branches
-* [MinGW-w64](https://mingw-w64.org) v9.x
+* [MinGW-w64](https://mingw-w64.org) master
 * [Binutils](https://www.gnu.org/software/binutils/) binutils-2_40-branch
 * [GCC](https://gcc.gnu.org/) releases/gcc-12
 
