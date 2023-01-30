@@ -272,14 +272,14 @@ while :; do
             ;;
         -r|--root)
             if [ "$2" ]; then
-                ROOT_PATH=$(realpath "$2")
+                ROOT_PATH_ARG="$2"
                 shift
             else
                 arg_error "'--root' requires a non-empty option argument"
             fi
             ;;
         --root=?*)
-            ROOT_PATH=$(realpath "${1#*=}")
+            ROOT_PATH_ARG="${1#*=}"
             ;;
         --root=)
             arg_error "'--root' requires a non-empty option argument"
@@ -410,6 +410,10 @@ else
 fi
 
 TOTAL_STEPS=$((TOTAL_STEPS + THREADS_STEPS + BUILD_STEPS))
+
+if [ "$ROOT_PATH_ARG" ]; then
+    ROOT_PATH=$(mkdir -p "$ROOT_PATH_ARG" && cd "$ROOT_PATH_ARG" && pwd)
+fi
 
 SRC_PATH="$ROOT_PATH/src"
 BLD_PATH="$ROOT_PATH/bld"
