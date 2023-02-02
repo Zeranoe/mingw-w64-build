@@ -88,7 +88,7 @@ execute()
         printf "(%d/%d): %s\n" "$CURRENT_STEP" "$TOTAL_STEPS" "$info_msg"
         CURRENT_STEP=$((CURRENT_STEP + 1))
     fi
-    $@ >>"$LOG_FILE" 2>&1 || error_exit "$error_msg, check $LOG_FILE for details"
+    "$@" >>"$LOG_FILE" 2>&1 || error_exit "$error_msg, check $LOG_FILE for details"
 }
 
 create_dir()
