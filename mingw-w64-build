@@ -26,6 +26,9 @@ ENABLE_THREADS="--enable-threads=posix"
 
 JOB_COUNT=$(($(getconf _NPROCESSORS_ONLN) + 2))
 
+BUILD_I686=0
+BUILD_X86_64=0
+
 LINKED_RUNTIME="msvcrt"
 
 show_help()
@@ -372,7 +375,8 @@ while :; do
     shift
 done
 
-if [ ! "$BUILD_I686" ] && [ ! "$BUILD_X86_64" ]; then
+NUM_BUILDS=$((BUILD_I686 + BUILD_X86_64))
+if [ "$NUM_BUILDS" -eq 0 ]; then
     arg_error "no ARCH was specified"
 fi
 
@@ -402,12 +406,8 @@ else
     THREADS_STEPS=0
 fi
 
-if [ "$BUILD_I686" ] && [ "$BUILD_X86_64" ]; then
-    THREADS_STEPS=$((THREADS_STEPS * 2))
-    BUILD_STEPS=26
-else
-    BUILD_STEPS=13
-fi
+THREADS_STEPS=$((THREADS_STEPS * NUM_BUILDS))
+BUILD_STEPS=$((13 * NUM_BUILDS))
 
 TOTAL_STEPS=$((TOTAL_STEPS + THREADS_STEPS + BUILD_STEPS))
 
