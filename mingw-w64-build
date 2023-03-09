@@ -26,10 +26,6 @@ ENABLE_THREADS="--enable-threads=posix"
 
 JOB_COUNT=$(($(getconf _NPROCESSORS_ONLN) + 2))
 
-BUILD_I586=0
-BUILD_I686=0
-BUILD_X86_64=0
-
 LINKED_RUNTIME="msvcrt"
 
 show_help()
