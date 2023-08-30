@@ -394,11 +394,7 @@ fi
 
 TOTAL_STEPS=0
 
-if [ "$CACHED_SOURCES" ]; then
-    if [ ! -f "$SRC_PATH/config.guess" ]; then
-        arg_error "no sources found, run with --keep-artifacts first"
-    fi
-else
+if [ ! "$CACHED_SOURCES" ]; then
     TOTAL_STEPS=$((TOTAL_STEPS + 4))
 fi
 
@@ -438,9 +434,15 @@ mkdir -p "$ROOT_PATH"
 rm -f "$LOG_FILE"
 touch "$LOG_FILE"
 
+
 if [ ! "$CACHED_SOURCES" ]; then
     download_sources
+else
+    if [ ! -f "$SRC_PATH/config.guess" ]; then
+        arg_error "no sources found, run with --keep-artifacts first"
+    fi
 fi
+
 
 BUILD=$(sh "$SRC_PATH/config.guess")
 
