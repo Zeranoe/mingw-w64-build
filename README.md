@@ -6,8 +6,8 @@ files.
 
 ## Default Branches
 * [MinGW-w64](https://mingw-w64.org) master
-* [Binutils](https://www.gnu.org/software/binutils/) binutils-2_40-branch
-* [GCC](https://gcc.gnu.org/) releases/gcc-12
+* [Binutils](https://www.gnu.org/software/binutils/) binutils-2_42-branch
+* [GCC](https://gcc.gnu.org/) releases/gcc-14
 
 ## Default Prefix
 `$HOME/.zeranoe/mingw-w64/i686` and `$HOME/.zeranoe/mingw-w64/x86_64` are the
