@@ -21,7 +21,7 @@ ROOT_PATH="$HOME/.zeranoe/mingw-w64"
 MINGW_W64_BRANCH="master"
 BINUTILS_BRANCH="binutils-2_42-branch"
 GCC_BRANCH="releases/gcc-14"
-WIN32_WINNT="0xa00"
+WIN32_WINNT="0xA00"
 
 ENABLE_THREADS="--enable-threads=posix"
 
@@ -54,19 +54,8 @@ Options:
   --linked-runtime <runtime>   set MinGW Linked Runtime (default: $LINKED_RUNTIME)
   --win32-winnt <version>      set default _WIN32_WINNT value (default: $WIN32_WINNT)
 
-Possible _WIN32_WINNT values:
-
-  0x0400 (Windows NT 4.0)
-  0x0500 (Windows 2000)
-  0x0501 (Windows XP)
-  0x0502 (Windows Server 2003)
-  0x0600 (Windows Vista)
-  0x0601 (Windows 7)
-  0x0602 (Windows 8)
-  0x0603 (Windows 8.1)
-  0x0A00 (Windows 10)
-
-See also: https://learn.microsoft.com/en-us/cpp/porting/modifying-winver-and-win32-winnt
+For possible _WIN32_WINNT values, see:
+https://learn.microsoft.com/en-us/cpp/porting/modifying-winver-and-win32-winnt
 
 EOF
 }
@@ -380,7 +369,7 @@ while :; do
         --win32-winnt=?*)
             WIN32_WINNT=${1#*=}
             ;;
-        --WIN32_WINNT=)
+        --win32-winnt=)
             arg_error "'--win32-winnt' requires a non-empty option argument"
             ;;
         i586)
