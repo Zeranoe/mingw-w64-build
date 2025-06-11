@@ -145,7 +145,7 @@ download_sources()
 
     execute "downloading config.guess" "" \
         curl -o config.guess \
-            "https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD"
+            "https://gitweb.git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD"
 }
 
 build()
