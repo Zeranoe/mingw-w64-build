@@ -18,8 +18,11 @@
 
 ROOT_PATH="$HOME/.zeranoe/mingw-w64"
 
+MINGW_W64_URL="https://git.code.sf.net/p/mingw-w64/mingw-w64"
 MINGW_W64_BRANCH="master"
+BINUTILS_URL="https://sourceware.org/git/binutils-gdb.git"
 BINUTILS_BRANCH="binutils-2_44-branch"
+GCC_URL="https://gcc.gnu.org/git/gcc.git"
 GCC_BRANCH="releases/gcc-14"
 WIN32_WINNT="0xA00"
 
@@ -48,8 +51,11 @@ Options:
   --keep-artifacts             don't remove source and build files after a successful build
   --disable-threads            disable pthreads and STL <thread>
   --cached-sources             use existing sources instead of downloading new ones
+  --binutils-url <url>         set Binutils URL (default: $BINUTILS_URL)
   --binutils-branch <branch>   set Binutils branch (default: $BINUTILS_BRANCH)
+  --gcc-url <url>              set GCC URL (default: $GCC_URL)
   --gcc-branch <branch>        set GCC branch (default: $GCC_BRANCH)
+  --mingw-w64-url <url>        set MinGW-w64 url (default: $MINGW_W64_URL)
   --mingw-w64-branch <branch>  set MinGW-w64 branch (default: $MINGW_W64_BRANCH)
   --linked-runtime <runtime>   set MinGW Linked Runtime (default: $LINKED_RUNTIME)
   --win32-winnt <version>      set default _WIN32_WINNT value (default: $WIN32_WINNT)
@@ -131,17 +137,17 @@ download_sources()
     create_dir "$SRC_PATH"
     change_dir "$SRC_PATH"
 
-    execute "downloading MinGW-w64 source" "" \
+    execute "downloading MinGW-w64 source" "unable to clone MinGW-w64, override the URL with: --mingw-w64-url <url>" \
         git clone --depth 1 -b "$MINGW_W64_BRANCH" \
-            https://git.code.sf.net/p/mingw-w64/mingw-w64 mingw-w64
+            "$MINGW_W64_URL" mingw-w64
 
-    execute "downloading Binutils source" "" \
+    execute "downloading Binutils source" "unable to clone Binutils, to use the official mirror: --binutils-url 'https://git.sr.ht/~sourceware/binutils-gdb'" \
         git clone --depth 1 -b "$BINUTILS_BRANCH" \
-            https://sourceware.org/git/binutils-gdb.git binutils
+            "$BINUTILS_URL" binutils
 
-    execute "downloading GCC source" "" \
+    execute "downloading GCC source" "unable to clone GCC, to use the official mirror: --gcc-url 'https://git.sr.ht/~sourceware/gcc'" \
         git clone --depth 1 -b "$GCC_BRANCH" \
-            https://gcc.gnu.org/git/gcc.git gcc
+            "$GCC_URL" gcc
 
     execute "downloading config.guess" "" \
         curl -o config.guess \
@@ -302,7 +308,21 @@ while :; do
         --cached-sources)
             CACHED_SOURCES=1
             ;;
-        --binutils-branch)
+        --binutils-url)
+            if [ "$2" ]; then
+                BINUTILS_URL="$2"
+                shift
+            else
+                arg_error "'--binutils-url' requires a non-empty option argument"
+            fi
+            ;;
+        --binutils-url=?*)
+            BINUTILS_URL=${1#*=}
+            ;;
+        --binutils-url=)
+            arg_error "'--binutils-url' requires a non-empty option argument"
+            ;;
+        --binutils-url)
             if [ "$2" ]; then
                 BINUTILS_BRANCH="$2"
                 shift
@@ -315,6 +335,20 @@ while :; do
             ;;
         --binutils-branch=)
             arg_error "'--binutils-branch' requires a non-empty option argument"
+            ;;
+        --gcc-url)
+            if [ "$2" ]; then
+                GCC_URL="$2"
+                shift
+            else
+                arg_error "'--gcc-url' requires a non-empty option argument"
+            fi
+            ;;
+        --gcc-url=?*)
+            GCC_URL=${1#*=}
+            ;;
+        --gcc-url=)
+            arg_error "'--gcc-url' requires a non-empty option argument"
             ;;
         --gcc-branch)
             if [ "$2" ]; then
@@ -343,6 +377,20 @@ while :; do
             ;;
         --linked-runtime=)
             arg_error "'--linked-runtime' requires a non-empty option argument"
+            ;;
+        --mingw-w64-url)
+            if [ "$2" ]; then
+                MINGW_W64_URL="$2"
+                shift
+            else
+                arg_error "'--mingw-w64-url' requires a non-empty option argument"
+            fi
+            ;;
+        --mingw-w64-url=?*)
+            MINGW_W64_URL=${1#*=}
+            ;;
+        --mingw-w64-url=)
+            arg_error "'--mingw-w64-url' requires a non-empty option argument"
             ;;
         --mingw-w64-branch)
             if [ "$2" ]; then
