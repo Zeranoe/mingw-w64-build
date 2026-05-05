@@ -322,7 +322,7 @@ while :; do
         --binutils-url=)
             arg_error "'--binutils-url' requires a non-empty option argument"
             ;;
-        --binutils-url)
+        --binutils-branch)
             if [ "$2" ]; then
                 BINUTILS_BRANCH="$2"
                 shift
